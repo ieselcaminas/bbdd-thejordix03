@@ -1,7 +1,9 @@
+import javax.swing.plaf.nimbus.State;
+import java.net.StandardSocketOptions;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ConectarSql {
 
@@ -23,23 +25,47 @@ public class ConectarSql {
     public static void main(String[] args) throws SQLException {
         java.sql.Connection con = getConnection();
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from usuarios");
-        while (rs.next()) {
+        ResultSet rs = stmt.executeQuery("SELECT * FROM usuarios");
+        //stmt.executeUpdate("CREATE TABLE T1 (c1 VARCHAR(20))");
+        while (rs.next()){
             System.out.println(rs.getInt(1));
             System.out.println("\t" + rs.getString(2));
             System.out.println("\t" + rs.getString(3));
-
-
         }
         stmt.close();
+
         //insertUser();
+        //insertUserPreparedStatement();
+        deleteUserPreparedStatement();
+    }
+    public static void selectPrepared() throws SQLException {
+        PreparedStatement st = null;
+        String sql = "SELECT FROM usuarios WHERE id = ?";
+        st = connection.prepareStatement(sql);
+        st.setInt(1, 5);
+        ResultSet rs = st.executeQuery();
 
     }
     public static void insertUser() throws SQLException {
         Statement st = connection.createStatement();
-        st.executeUpdate("INSERT INTO usuarios (nombre,apellidos) VALUES ('Janet', 'Espinosa')");
+        st.executeUpdate("INSERT INTO usuarios (nombre, apellidos) VALUES ('Janet', 'Espinosa')");
     }
 
+    public static void insertUserPreparedStatement() throws SQLException {
+        PreparedStatement st = null;
+        String sql = "INSERT INTO usuarios (nombre, apellidos) VALUES (?, ?)";
+        st = connection.prepareStatement(sql);
+        st.setString(1, "Juan");
+        st.setString(2, "Martínez");
+        st.executeUpdate();
+    }
+    public static void deleteUserPreparedStatement() throws SQLException {
+        PreparedStatement st = null;
+        //String sql = "INSERT INTO usuarios (nombre, apellidos) VALUES (?, ?)";
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+        st = connection.prepareStatement(sql);
+        st.setInt(1, 5);
+        st.executeUpdate();
 
-
+    }
 }
