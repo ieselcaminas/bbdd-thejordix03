@@ -68,7 +68,7 @@ public class GestionUsuarios {
 
         if (rs.next()) {
             Main.id_usuario = rs.getInt("id"); // Guardar ID del usuario en Main
-            return rs.getString("nombre") + " " + apellido; // Retornar el nombre completo
+            return rs.getString("nombre") + " " + apellido; // Devolver el nombre completo
         }
         return "";
     }
